@@ -1,4 +1,4 @@
-import express from "express";
+ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -11,31 +11,27 @@ import blogRoutes from "./routes/blogRoutes.js";
 import { connectDB } from "./config/db.js";
 
 dotenv.config();
+
 const app = express();
 
 // Middleware
 app.use(express.json());
-// app.use(cors({ origin: "http://localhost:3000","https://www.ayurvedastronglife.com" ,credentials: true }));
+app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:3000", "https://www.ayurvedastronglife.com"],
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
-app.use(cookieParser());
 
 // Routes
-// app.use("/", (req, res) => {
-//   res.send("hey this blog API is made by Ankit");
-// });
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes);
 
 app.get("/", (req, res) => {
-  res.send("This is the blog API");
+  res.send("Blog API is live!");
 });
 
 // Connect to MongoDB and start server
+const PORT = process.env.PORT || 5000;
 connectDB().then(() => {
-  app.listen(process.env.PORT, () =>
-    console.log(`Server running on port ${process.env.PORT}`)
-  );
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
