@@ -29,6 +29,10 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes);
 
+app.use("/" , (req ,res)=>{
+  res.send("this is blog api")
+})
+
 // Connect to MongoDB and start server
 connectDB().then(() => {
   app.listen(process.env.PORT, () =>
