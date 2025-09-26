@@ -82,5 +82,13 @@ router.get("/:slug", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+// delte ll route 
+router.delete("/", authMiddleware, async (req, res) => {
+  try {
+    const result = await Blog.deleteMany({ author: req.userId });
+    res.json({ message: `${result.deletedCount} blog(s) deleted successfully` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 export default router;
